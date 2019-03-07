@@ -1,6 +1,6 @@
 # SpamDeny
 
-**v1.2 : _Beta_ **
+**v1.2 : _Beta_**
 
 
 > **_Tested_**
