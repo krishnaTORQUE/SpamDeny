@@ -46,7 +46,7 @@ python3 Start.py
 
 > ### Server Config Files
 
-#####_Files will be generate on Desktop_
+##### _Files will be generate on Desktop_
 
 #### Nginx
 - Copy `blockips.conf` Inside `/etc/nginx/conf.d/`
@@ -71,4 +71,4 @@ https://www.stopforumspam.com/contributors
 - Let me know to become a contributor.
 
 
-> **_License (C) 2019 under GNU GPL V2_**
+> ## _License (C) 2019 under GNU GPL V2_
