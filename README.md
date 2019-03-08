@@ -15,7 +15,8 @@
 - PyQt      : 5
 
 
-> ### DOC
+> ## Documentation
+
 #### _For Library_
 ```python
 from SpamDeny import *
@@ -35,13 +36,20 @@ sd.filter()
 ```
 
 
-#### _For GUI_ (Cross Platform)
+#### _For Gui_ (Cross Platform)
 ```shell
 # 1. Clone / Download Repository & Extract
 # 2. Open Console & Follow Download Location
-# 3. Run Command below
 python3 Start.py
 ```
+
+
+![Gui Screenshot](Screenshot.png)
+
+#### Gui Usage
+- `Download Database` is to download from Database providers.
+- `Local Database` is to add your own databases in `txt` file. Separate IP by new line. Multiple files supported.
+- `Generate` is to generate & filter IPs & save files in desktop.
 
 
 > ### Server Config Files
@@ -72,3 +80,4 @@ https://www.stopforumspam.com/contributors
 
 
 > ## _License (C) 2019 under GNU GPL V2_
+

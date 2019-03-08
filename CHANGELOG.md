@@ -1,5 +1,10 @@
 ### Change Log & History
 
+> ##### 08-03-2019 ~ _v1.2_ : _Beta_
+
+    More Documentation
+    Screenshot added
+
 > ##### 07-03-2019 ~ _v1.2_ : _Beta_
 
     GUI Added
