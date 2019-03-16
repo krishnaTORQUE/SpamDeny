@@ -1,6 +1,6 @@
 # Change Log & History
 
-> ##### || ~ _v1.3_ : _Stable_
+> ##### 16-03-2019 ~ _v1.3_ : _Stable_
 
     Major Changes in Library
     List Update
