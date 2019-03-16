@@ -1,4 +1,4 @@
-![Gui Screenshot](icon.png)
+![SpamDeny](icon.ico)
 # SpamDeny
 **v1.3 : _Stable_**
 
