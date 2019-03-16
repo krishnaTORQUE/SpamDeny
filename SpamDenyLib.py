@@ -1,9 +1,9 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import os
 import sys
 import shutil
+import signal
 import tempfile
 import re
 import json
@@ -11,9 +11,12 @@ import requests
 import zipfile
 
 
-# OS Directory Separator #
+# == Directory Separator == #
 def DirSep(path):
-    return path.replace('/', os.sep).replace('\\', os.sep)
+    syMP = os.path.join(os.path.abspath("."), path)
+    if hasattr(sys, '_MEIPASS'):
+        syMP = os.path.join(sys._MEIPASS, path)
+    return syMP.replace('/', os.sep).replace('\\', os.sep)
 
 
 # == Main Class == #
@@ -28,15 +31,13 @@ class SpamDeny:
                 'https://www.stopforumspam.com/downloads/bannedips.zip',
                 'https://www.stopforumspam.com/downloads/listed_ip_1.zip',
                 'https://www.stopforumspam.com/downloads/listed_ip_7.zip',
-                'https://www.stopforumspam.com/downloads/listed_ip_30.zip',
-                'https://www.stopforumspam.com/downloads/listed_ip_90.zip'
+                'https://www.stopforumspam.com/downloads/listed_ip_30.zip'
             ],
             # Ipv6 #
             'v6': [
                 'https://www.stopforumspam.com/downloads/listed_ip_1_ipv6.zip',
                 'https://www.stopforumspam.com/downloads/listed_ip_7_ipv6.zip',
-                'https://www.stopforumspam.com/downloads/listed_ip_30_ipv6.zip',
-                'https://www.stopforumspam.com/downloads/listed_ip_90_ipv6.zip'
+                'https://www.stopforumspam.com/downloads/listed_ip_30_ipv6.zip'
             ]
         }
 
@@ -46,17 +47,19 @@ class SpamDeny:
         self.desktop = os.path.normpath(os.path.expanduser("~/Desktop")) + '/'
         self.projectUrl = 'https://github.com/krishnaTORQUE/SpamDeny'
         self.obj = __class__.__name__
-        self.version = 1.2
-        self.status = 'Beta'
         self.tmpObj = self.tmp + self.obj
+        self.version = 1.3
+        self.status = 'Stable'
         self.stdOut = True
         self.local = []
+        self.logD = {}
 
         # == Check Temp Directory == #
         self.clear()
         os.makedirs(DirSep(self.tmpObj))
         os.makedirs(DirSep(self.tmpObj + '/D'))
         os.makedirs(DirSep(self.tmpObj + '/F'))
+        self.logDW()
 
     # == Get File Name == #
     def file_name(self, file):
@@ -67,27 +70,61 @@ class SpamDeny:
         data = ''
         file = open(file, 'r')
         for line in file:
-            data += line
+            data += str(line)
         return data
 
     # == File Write == #
     def file_write(self, file, content):
-        file = open(file, 'w')
-        file.write(content)
-        file.close()
+        if os.path.isdir(self.tmpObj):
+            file = open(file, 'w')
+            file.write(content)
+            file.close()
 
     # == Download ZIP == #
     def down_zip(self, url):
+        self.logDW({
+            'status': 'download'
+        })
+
         r = requests.get(url)
         with open(DirSep(self.tmpObj + '/D/' + self.file_name(url)), 'wb') as z:
             z.write(r.content)
 
     # == Unzip Download Zip File == #
     def down_unzip(self, file):
-        zip_ref = zipfile.ZipFile(file, 'r')
-        zip_ref.extractall(DirSep(self.tmpObj + '/F/'))
-        zip_ref.close()
-        os.remove(file)
+        try:
+            self.logDW({
+                'status': 'unzip'
+            })
+            zip_ref = zipfile.ZipFile(file, 'r')
+            zip_ref.extractall(DirSep(self.tmpObj + '/F/'))
+            zip_ref.close()
+            os.remove(file)
+
+        except:
+            self.logDW({
+                'status': 'error'
+            })
+
+    # Log Data #
+    def logDW(self, data = {}):
+        if 'status' not in data:
+            data['status'] = 'wait'
+
+        if 'percent' not in data:
+            data['percent'] = 0
+
+        if 'total' not in data:
+            data['total'] = 0
+
+        if 'add' not in data:
+            data['add'] = 0
+
+        self.logD = data
+        self.file_write(DirSep(self.tmpObj + '/process.json'), json.dumps(data))
+
+        if data['status'] == 'error':
+            os.kill(os.getpid(), signal.SIGILL)
 
     # == Ips Download == #
     def download(self):
@@ -119,23 +156,24 @@ class SpamDeny:
         txt = ''
         nginx = ''
         apache = ''
-        logD = {}
 
         # Search #
         search_v4 = [
             r'[\r\n|\r|\n|\t| |,]',
-            r'[^0-9.\n]'
+            r'[^0-9.\n\/]'
         ]
         search_v6 = [
             r'[\r|\n|\r\n|\t| |,|\.]',
-            r'[^a-z0-9:\n]'
+            r'[^a-z0-9:\n\/]'
         ]
 
         # Replace #
         replace = [r'\n', '']
 
-        files = os.listdir(DirSep(self.tmpObj + '/F'))
+        if os.path.isdir(DirSep(self.tmpObj + '/F')) is False:
+            return
 
+        files = os.listdir(DirSep(self.tmpObj + '/F'))
         # From Local #
         for l in self.local:
             ip_lst += self.file_read(l)
@@ -155,8 +193,8 @@ class SpamDeny:
             new = None
 
             # Valid IP #
-            if len(ip) > 4:
-                if re.search(r':', ip, flags = re.I | re.S):
+            if len(ip) > 6 and len(ip) < 40:
+                if re.search(r':', ip):
                     # IPv6 #
                     for sr in range(0, len(search_v4)):
                         new = re.sub(search_v6[sr], replace[sr], ip)
@@ -173,6 +211,7 @@ class SpamDeny:
             if new is not None and \
                     new not in add and \
                     len(new) > 4:
+                new = new.strip()
                 add.append(new)
                 txt += new + '\n'
                 nginx += 'deny ' + new + ';\n'
@@ -180,19 +219,20 @@ class SpamDeny:
 
             # Status #
             percent = round((count / total) * 100, 4)
-            if percent > 99.1:
-                percent = 100
 
-            logD['percent'] = percent
-            logD['total'] = total
-            logD['add'] = len(add)
-            self.file_write(DirSep(self.tmpObj + '/process.json'), json.dumps(logD))
+            # Log Data #
+            self.logDW({
+                'status' : 'filter',
+                'percent': percent,
+                'total'  : total,
+                'add'    : len(add)
+            })
 
             # Print to Console #
             if self.stdOut:
                 os.system('clear')
-                print('Progress: {} % | Total: {} | Added: {}'.format(logD['percent'], logD['total'], logD['add']))
-
+                print('Progress: {} % | Total: {} | Added: {}'.format(self.logD['percent'], self.logD['total'],
+                                                                      self.logD['add']))
             count += 1
 
         # Save Text File #

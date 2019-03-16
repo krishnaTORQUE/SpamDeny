@@ -1,4 +1,22 @@
-### Change Log & History
+# Change Log & History
+
+> ##### || ~ _v1.3_ : _Stable_
+
+    Major Changes in Library
+    List Update
+    Gui Improved
+    Progressbar Added
+    Requirements Added (requirements.py)
+
+    :: Added ::
+        Unzip Indication
+        ERROR           > If you reached database download limit.
+
+    :: Bug Fixed ::
+            Download Indication
+            Logo / Icon Rendering
+            App Opening & Closing Issue (Windows)
+            Error in `nginx.conf` for Blocklist
 
 > ##### 08-03-2019 ~ _v1.2_ : _Beta_
 
@@ -21,3 +39,5 @@
 > ##### 27-01-2019 ~ _v1.0_ : _Alpha_
 
     First Made
+    Initial Release
+
