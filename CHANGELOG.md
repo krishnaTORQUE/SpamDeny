@@ -1,5 +1,13 @@
 # Change Log & History
 
+> ##### 19-03-2019 ~ _v1.4_ : _Stable_
+
+    Minor Changes (Lib & Gui)
+    Review All Files
+    Stability Improved
+    :: Added ::
+        IP Range
+
 > ##### 16-03-2019 ~ _v1.3_ : _Stable_
 
     Major Changes in Library
@@ -7,11 +15,9 @@
     Gui Improved
     Progressbar Added
     Requirements Added (requirements.py)
-
     :: Added ::
         Unzip Indication
         ERROR           > If you reached database download limit.
-
     :: Bug Fixed ::
             Download Indication
             Logo / Icon Rendering

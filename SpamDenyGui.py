@@ -157,6 +157,7 @@ class Win(QMainWindow):
         startPF = Process(target = self.startPF)
         startPF.start()
 
+    # == Start Process & Filter == #
     def startPF(self):
         # Download if checked #
         dp = False
@@ -188,7 +189,7 @@ class Win(QMainWindow):
                 elif logR['status'] == 'error':
                     self.genBtn.setVisible(False)
                     self.qprog.setVisible(False)
-                    self.result.setText('* ERROR *')
+                    self.result.setText('* ERROR : Reached Download Limit *')
                     self.setWindowTitle(self.SD.obj)
                     self.SD.clear()
                     self.genStart = False

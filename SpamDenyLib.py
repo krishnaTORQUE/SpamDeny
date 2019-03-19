@@ -48,7 +48,7 @@ class SpamDeny:
         self.projectUrl = 'https://github.com/krishnaTORQUE/SpamDeny'
         self.obj = __class__.__name__
         self.tmpObj = self.tmp + self.obj
-        self.version = 1.3
+        self.version = 1.4
         self.status = 'Stable'
         self.stdOut = True
         self.local = []
@@ -85,7 +85,6 @@ class SpamDeny:
         self.logDW({
             'status': 'download'
         })
-
         r = requests.get(url)
         with open(DirSep(self.tmpObj + '/D/' + self.file_name(url)), 'wb') as z:
             z.write(r.content)
@@ -189,19 +188,18 @@ class SpamDeny:
 
         # Filtering #
         for ip in ip_lst:
-            ip = re.sub(r'\/.*', '', ip)
             new = None
 
             # Valid IP #
             if len(ip) > 6 and len(ip) < 40:
                 if re.search(r':', ip):
                     # IPv6 #
-                    for sr in range(0, len(search_v4)):
+                    for sr in range(0, len(search_v6)):
                         new = re.sub(search_v6[sr], replace[sr], ip)
 
                 else:
                     # IPv4 #
-                    for sr in range(0, len(search_v6)):
+                    for sr in range(0, len(search_v4)):
                         new = re.sub(search_v4[sr], replace[sr], ip)
 
             #

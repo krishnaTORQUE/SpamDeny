@@ -1,14 +1,14 @@
 ![SpamDeny](icon.ico)
 # SpamDeny
-**v1.3 : _Stable_**
+**v1.4 : _Stable_**
 
 
-> #### _Tested on_
+> ### _Tested on_
 
 Debian, Ubuntu, Mint, Windows 7, Windows 10
 
 
-> #### _Requirements_
+> ### _Requirements_
 
 - Python 3.6 (Full Install with System Path/Environment)
 - PyQt5
@@ -48,24 +48,24 @@ sd.filter()
 python Start.py
 ```
 
-**_Gui for Windows Users_**
+**_Gui only for Windows Users_**
 
 1. Download Repository & Extract.
 2. Download & install Python 3.6 with System Path. (Skip, if already installed)
-3. Double click on `requirements.py`. (If you are using for first time.)
+3. Double click on `requirements.py`. (If you are using for first time)
 4. Double click on `Start.py`.
 
 
 ![Gui Screenshot](Screenshot.png)
 
-> #### _Gui Usage_
+> ### _Gui Usage_
 
 - `Download Database` is to download from Database providers.
-- `Local Database` is to add your own databases in `txt` file. Separate IP by new line. (Multiple files support)
+- `Local Database` is to add your own databases in `.txt` file. Separate IP by new line. (Multiple files support)
 - `Generate` is to filter IPs & generate/save files in `Desktop`.
 
 
-> #### _Server Config Files_
+> ### _Server Config Files_
 
 **Files will be generate on Desktop**
 
@@ -81,7 +81,7 @@ python Start.py
 
 > ## _Contributors_
 
-##### Ip Database
+#### Ip Database
 - https://www.stopforumspam.com
 - https://www.stopforumspam.com/contributors
 
