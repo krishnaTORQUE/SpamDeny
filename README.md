@@ -1,6 +1,6 @@
 ![SpamDeny](icon.ico)
 # SpamDeny
-**v1.4 : _Stable_**
+**v1.5 : _Stable_**
 
 
 > ### _Tested on_
@@ -10,9 +10,10 @@ Debian, Ubuntu, Mint, Windows 7, Windows 10
 
 > ### _Requirements_
 
-- Python 3.6 (Full Install with System Path/Environment)
-- PyQt5
+- Python  >= 3.6.5  (Full Install with System Path/Environment)
+- PyQt    == 5
 - requests
+- pywin32           (Only For Windows)
 
 
 > ## _Documentation_
@@ -38,7 +39,7 @@ sd.filter()
 ```
 
 
-**_For Gui_** (Cross Platform)
+**_For Gui_** (Cross Platform) 
 ```shell
 '''
 1. Clone / Download Repository & Extract
@@ -50,9 +51,9 @@ python Start.py
 
 **_Gui only for Windows Users_**
 
-1. Download Repository & Extract.
-2. Download & install Python 3.6 with System Path. (Skip, if already installed)
-3. Double click on `requirements.py`. (If you are using for first time)
+1. Download ZIP & Extract.
+2. Download & install Python 3.6.8 with System Path. (Skip, if already installed)
+3. Double click on `requirements.py`. (If you are using for the first time)
 4. Double click on `Start.py`.
 
 
@@ -61,7 +62,7 @@ python Start.py
 > ### _Gui Usage_
 
 - `Download Database` is to download from Database providers.
-- `Local Database` is to add your own databases in `.txt` file. Separate IP by new line. (Multiple files support)
+- `Local Database` is to add your own databases in `.txt,csv` file. Separate IP by new line. (Multiple files support)
 - `Generate` is to filter IPs & generate/save files in `Desktop`.
 
 

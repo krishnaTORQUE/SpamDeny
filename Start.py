@@ -8,9 +8,9 @@ if __name__ == '__main__':
     win = Win()
 
     # == Result Display Timer == #
-    rpTim = QTimer()
-    rpTim.timeout.connect(win.resultProgress)
-    rpTim.setInterval(1)
-    rpTim.start()
+    win.rpTim = QTimer()
+    win.rpTim.timeout.connect(win.resultProgress)
+    win.rpTim.setInterval(1)
+    win.rpTim.start()
 
     sys.exit(qapp.exec_())

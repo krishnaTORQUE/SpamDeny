@@ -4,6 +4,7 @@ from SpamDenyLib import *
 
 import webbrowser
 from multiprocessing import *
+import signal
 
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -25,12 +26,12 @@ class Win(QMainWindow):
         self.winHeight = 200
         self.winTop = 50
         self.winLeft = 50
-        self.nameBtnStyle = 'font-size: 14px; color: #444444; font-weight: bold;'
-        self.projdBtnStyle = 'font-size: 12px; color: #666666; font-weight: bold;'
-        self.dwCheckBtnStyle = 'font-size: 14px; color: #444444; font-weight: bold;'
-        self.addLocalBtnStyle = 'font-size: 14px; color: #444444; font-weight: bold; border: 0;'
+        self.nameBtnStyle = 'font-size: 14px; color: #333333; font-weight: bold;'
+        self.projdBtnStyle = 'font-size: 12px; color: #555555; font-weight: bold;'
+        self.dwCheckBtnStyle = 'font-size: 14px; color: #333333; font-weight: bold;'
+        self.addLocalBtnStyle = 'font-size: 14px; color: #333333; font-weight: bold; border: 0;'
         self.genBtnStyle = 'font-size: 14px; font-weight: bold; color: #ffffff; background: #333333; border: 0;'
-        self.finishBtnStyle = 'font-size: 14px; font-weight: bold; color: #000000; background: #00ff00; border: 0;'
+        self.finishBtnStyle = 'font-size: 14px; font-weight: bold; color: #000000; background: #00ee00; border: 0;'
         self.resultStyle = 'font-size: 15px; font-weight: bold; color: #000000; background: transparent; border: 0;'
         self.progressbarStyle = '''
         QProgressBar,
@@ -43,7 +44,7 @@ class Win(QMainWindow):
         }
         
         QProgressBar::chunk {
-            background: #00ff00;
+            background: #00dd00;
             width: 4px;
         }
         '''
@@ -53,6 +54,8 @@ class Win(QMainWindow):
         self.result = None
         self.genBtn = None
         self.genStart = False
+        self.rpTim = False
+        self.procs = []
 
         # == Init Body & Show Window == #
         self.win_init()
@@ -65,6 +68,7 @@ class Win(QMainWindow):
         self.setWindowTitle(self.SD.obj)
         self.setFixedSize(self.winWidth, self.winHeight)
         self.move(self.winLeft, self.winTop)
+        self.setStyleSheet('background: #ffffff;')
 
     # == Win Body == #
     def win_body(self):
@@ -145,7 +149,7 @@ class Win(QMainWindow):
         # Check Empty #
         if len(self.SD.local) < 1 and \
                 self.dwCheck.isChecked() is False:
-            self.result.setText('Database is empty')
+            self.result.setText('Select Database')
             return
 
         # Disable Buttons #
@@ -154,7 +158,8 @@ class Win(QMainWindow):
         self.genBtn.setDisabled(True)
         self.genBtn.setText('Job Started')
 
-        startPF = Process(target = self.startPF)
+        startPF = Process(target = self.startPF())
+        self.procs.append(startPF)
         startPF.start()
 
     # == Start Process & Filter == #
@@ -163,12 +168,14 @@ class Win(QMainWindow):
         dp = False
         if self.dwCheck.isChecked():
             dp = Process(target = self.SD.download)
+            self.procs.append(dp)
             dp.start()
 
         # Start Filtering Process #
         while 1:
             if dp is False or dp.is_alive() is False:
                 fp = Process(target = self.SD.filter)
+                self.procs.append(fp)
                 fp.start()
                 break
 
@@ -177,7 +184,7 @@ class Win(QMainWindow):
         # Progress & Feedback Loop #
         if os.path.isfile(DirSep(self.SD.tmpObj + '/process.json')):
             logR = self.SD.file_read(DirSep(self.SD.tmpObj + '/process.json'))
-            if len(logR) > 9:
+            if len(logR) > 20:
                 logR = json.loads(logR)
 
                 # Download / Unzip #
@@ -214,18 +221,22 @@ class Win(QMainWindow):
                     self.result.setText(resultT)
                     self.setWindowTitle('{} ({}%)'.format(self.SD.obj, percentage))
                     self.genStart = [
+                        percentage,
                         logR['total'],
                         logR['add']
                     ]
 
         # Complete #
-        if self.genStart and os.path.isdir(DirSep(self.SD.tmpObj)) is False:
+        if self.genStart and \
+                (os.path.isdir(DirSep(self.SD.tmpObj)) is False or \
+                 os.path.isfile(DirSep(self.SD.desktop + 'spamips.txt'))):
             self.qprog.setVisible(False)
             self.genBtn.setText('Job Complete')
             self.genBtn.setStyleSheet(self.finishBtnStyle)
-            r = 'Total: {} | Added: {}'.format(self.genStart[0], self.genStart[1])
+            r = 'Total: {} | Added: {}'.format(self.genStart[1], self.genStart[2])
             self.result.setText(r)
             self.setWindowTitle(self.SD.obj)
+            self.rpTim.stop()
 
     # == Close App == #
     def closeEvent(self, QCloseEvent):
@@ -233,4 +244,12 @@ class Win(QMainWindow):
         self.qprog.setVisible(False)
         self.result.setText('* STOPPED *')
         self.setWindowTitle(self.SD.obj)
+        # Kill Parent & Child Process #
+        for p in self.procs:
+            if p.pid != os.getpid() and p.is_alive():
+                p.terminate()
+        try:
+            os.killpg(os.getpid(), signal.SIGTERM)
+        except:
+            os.kill(os.getpid(), signal.CTRL_C_EVENT)
         sys.exit()

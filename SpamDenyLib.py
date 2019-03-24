@@ -44,11 +44,11 @@ class SpamDeny:
         # == Constants == #
         self.root = os.path.dirname(os.path.realpath(__file__)) + '/'
         self.tmp = tempfile.gettempdir() + '/'
-        self.desktop = os.path.normpath(os.path.expanduser("~/Desktop")) + '/'
+        self.desktop = DirSep(os.path.normpath(os.path.expanduser("~/Desktop")) + '/')
         self.projectUrl = 'https://github.com/krishnaTORQUE/SpamDeny'
         self.obj = __class__.__name__
         self.tmpObj = self.tmp + self.obj
-        self.version = 1.4
+        self.version = 1.5
         self.status = 'Stable'
         self.stdOut = True
         self.local = []
@@ -75,7 +75,7 @@ class SpamDeny:
 
     # == File Write == #
     def file_write(self, file, content):
-        if os.path.isdir(self.tmpObj):
+        if os.path.isdir(DirSep(self.tmpObj)):
             file = open(file, 'w')
             file.write(content)
             file.close()
@@ -243,8 +243,8 @@ class SpamDeny:
         apache = 'order allow,deny\n' + apache + 'allow from all'
         self.file_write(DirSep(self.desktop + 'denyips.conf'), apache)
 
-        # Clear #
-        self.clear(False)
+        if self.stdOut:
+            self.clear(False)
 
     # == Clear Temp == #
     def clear(self, gen = True):

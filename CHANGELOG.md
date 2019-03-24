@@ -1,5 +1,17 @@
 # Change Log & History
 
+> ##### 24-03-2019 ~ _v1.5_ : _Stable_
+
+    Minor Changes in Library
+    :: Improved ::
+        Gui
+        Path
+    :: Bug Fixed ::
+        Wroung Count, Percentage & ProgressBar 
+        Lagging while open or close
+        Not Responding when closing
+        Stuck on close (Windows)
+
 > ##### 19-03-2019 ~ _v1.4_ : _Stable_
 
     Minor Changes (Lib & Gui)
