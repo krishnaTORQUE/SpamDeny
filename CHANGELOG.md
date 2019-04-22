@@ -1,5 +1,11 @@
 # Change Log & History
 
+> ##### 23-04-2019 ~ _v1.6_ : _Stable_
+
+    Minor Bugs Fixed
+    Stability Improved
+    Removed requirements.py
+
 > ##### 24-03-2019 ~ _v1.5_ : _Stable_
 
     Minor Changes in Library

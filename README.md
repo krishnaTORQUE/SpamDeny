@@ -1,6 +1,6 @@
 ![SpamDeny](icon.ico)
 # SpamDeny
-**v1.5 : _Stable_**
+**v1.6 : _Stable_**
 
 
 > ### _Tested on_
@@ -53,8 +53,7 @@ python Start.py
 
 1. Download ZIP & Extract.
 2. Download & install Python 3.6.8 with System Path. (Skip, if already installed)
-3. Double click on `requirements.py`. (If you are using for the first time)
-4. Double click on `Start.py`.
+3. Double click on `Start.py`.
 
 
 ![Gui Screenshot](Screenshot.png)
@@ -89,7 +88,7 @@ python Start.py
 
 > ## _Note_
 
-- If first time you are using this tool, run `requirements.py` before starting App.
+- If first time you are using this tool, check the requirements has installed.
 - Report here for issue / bug.
 - Let me know to become a contributor.
 

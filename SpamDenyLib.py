@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# !/usr/bin/python3
 
 import os
 import sys
@@ -48,7 +49,7 @@ class SpamDeny:
         self.projectUrl = 'https://github.com/krishnaTORQUE/SpamDeny'
         self.obj = __class__.__name__
         self.tmpObj = self.tmp + self.obj
-        self.version = 1.5
+        self.version = 1.6
         self.status = 'Stable'
         self.stdOut = True
         self.local = []

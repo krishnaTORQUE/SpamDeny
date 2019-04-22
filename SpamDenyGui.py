@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
+# !/usr/bin/python3
 
 from SpamDenyLib import *
 
+import signal
 import webbrowser
 from multiprocessing import *
-import signal
 
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -21,7 +22,7 @@ class Win(QMainWindow):
         self.SD.stdOut = False
 
         # == Datas == #
-        self.icon = DirSep('icon.ico')
+        self.icon = DirSep(self.SD.root + 'icon.ico')
         self.winWidth = 400
         self.winHeight = 200
         self.winTop = 50
@@ -158,6 +159,7 @@ class Win(QMainWindow):
         self.genBtn.setDisabled(True)
         self.genBtn.setText('Job Started')
 
+        # Start Process for Filter #
         startPF = Process(target = self.startPF())
         self.procs.append(startPF)
         startPF.start()
